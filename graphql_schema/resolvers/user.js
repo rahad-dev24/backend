@@ -34,9 +34,7 @@ export default {
       };
       return user;
     },
-  },
-  signIn: async (parent, args, { req, res }, info) => {
-    if (!req.session.user) {
+    signIn: async (parent, args, { req, res }, info) => {
       const user = await prisma.user.findUnique({
         where: {
           email: args.email,
@@ -51,12 +49,11 @@ export default {
         };
         return user;
       }
-    }
-    //else redirect to dashboard
-  },
-  signOut: async (parent, args, { req, res }, info) => {
-    req.session.destroy();
-    return true;
+    },
+    signOut: async (parent, args, { req, res }, info) => {
+      req.session.destroy();
+      return true;
+    },
   },
   User: {
     products: async (parent) => {

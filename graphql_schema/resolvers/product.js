@@ -37,31 +37,30 @@ export default {
       });
       return product;
     },
-  },
+    updateProduct: async (parent, args, { req, res }, info) => {
+      const product = await prisma.product.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          product_name: args.product_name,
+          description: args.description,
+          price: args.price,
+          rent_price: args.rent_price,
+          rent_option: args.rent_option,
+        },
+      });
+      return product;
+    },
 
-  updateProduct: async (parent, args, { req, res }, info) => {
-    const product = await prisma.product.update({
-      where: {
-        id: args.id,
-      },
-      data: {
-        product_name: args.product_name,
-        description: args.description,
-        price: args.price,
-        rent_price: args.rent_price,
-        rent_option: args.rent_option,
-      },
-    });
-    return product;
-  },
-
-  deleteProduct: async (parent, args, { req, res }, info) => {
-    const product = await prisma.product.delete({
-      where: {
-        id: args.id,
-      },
-    });
-    return product;
+    deleteProduct: async (parent, args, { req, res }, info) => {
+      const product = await prisma.product.delete({
+        where: {
+          id: args.id,
+        },
+      });
+      return product;
+    },
   },
 
   Product: {
