@@ -23,7 +23,7 @@ model User {
   password   String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now())
-  Product    Product[]
+  products   Product[]
 }
 
 model Category {
@@ -31,30 +31,35 @@ model Category {
   category_name    String
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @default(now())
-  Product_category Product_category[]
+  product_category Product_category[]
+}
+
+enum Rent_option {
+  Hourly
+  Daily
+  Monthly
 }
 
 model Product {
-  id           String @id @default(cuid())
-  user_id      String
-  product_name String
-  description  String
-  price        Int
-  rent_price   Int
-  rent_option  String
+  id      String @id @default(cuid())
+  user_id String
+  User    User   @relation(fields: [user_id], references: [id])
 
+  product_name     String
+  description      String
+  price            Float
+  rent_price       Float
+  rent_option      Rent_option        @default(Daily)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @default(now())
-  User             User               @relation(fields: [user_id], references: [id])
-  Product_category Product_category[]
+  product_category Product_category[]
 }
 
 model Product_category {
-  id          String   @id @default(cuid())
-  product_id  String
   category_id String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  Product     Product  @relation(fields: [product_id], references: [id])
-  Category    Category @relation(fields: [category_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id])
+  product_id  String
+  product     Product  @relation(fields: [product_id], references: [id])
+
+  @@unique([category_id, product_id])
 }
