@@ -18,6 +18,7 @@ export default {
   Mutation: {
     createUser: async (parent, args, { req, res }, info) => {
       //todo: hash password
+      console.log(args);
       const user = await prisma.user.create({
         data: {
           first_name: args.first_name,
@@ -28,10 +29,9 @@ export default {
           password: args.password,
         },
       });
+
       //saving id to session cookie
-      req.session.user = {
-        id: user.id,
-      };
+      // req.session.userId = user.id;
       return user;
     },
     signIn: async (parent, args, { req, res }, info) => {
@@ -40,15 +40,13 @@ export default {
           email: args.email,
         },
       });
+      //todo: remove extra if in prod
+      if (!user) throw new Error("Email does not exist");
       if (user.password === args.password) {
-        req.session.user = {
-          id: user.id,
-        };
-        req.session.user = {
-          id: user.id,
-        };
+        //saving id to session cookie
+        //req.session.user =user.id
         return user;
-      }
+      } else throw new Error("Invalid credentials");
     },
     signOut: async (parent, args, { req, res }, info) => {
       req.session.destroy();
