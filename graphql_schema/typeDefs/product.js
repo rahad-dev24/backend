@@ -16,7 +16,9 @@ export default gql`
   }
   extend type Query {
     getProducts: [Product]
+    getProduct(id: ID!): Product
   }
+
   extend type Mutation {
     createProduct(
       product_name: String
@@ -25,6 +27,7 @@ export default gql`
       price: Float
       rent_price: Float
       rent_option: String
+      product_category: [String]
     ): Product
   }
 `;
