@@ -28,8 +28,35 @@ export default {
           password: args.password,
         },
       });
+      //saving id to session cookie
+      req.session.user = {
+        id: user.id,
+      };
       return user;
     },
+  },
+  signIn: async (parent, args, { req, res }, info) => {
+    if (!req.session.user) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: args.email,
+        },
+      });
+      if (user.password === args.password) {
+        req.session.user = {
+          id: user.id,
+        };
+        req.session.user = {
+          id: user.id,
+        };
+        return user;
+      }
+    }
+    //else redirect to dashboard
+  },
+  signOut: async (parent, args, { req, res }, info) => {
+    req.session.destroy();
+    return true;
   },
   User: {
     products: async (parent) => {
