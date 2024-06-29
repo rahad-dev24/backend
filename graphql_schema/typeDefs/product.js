@@ -29,5 +29,14 @@ export default gql`
       rent_option: String
       product_category: [String]
     ): Product
+    updateProduct(
+      product_name: String
+      description: String
+      price: Float
+      rent_price: Float
+      rent_option: String
+      product_category: [String]
+    ): Product
+    deleteProduct(id: ID!): Product
   }
 `;
