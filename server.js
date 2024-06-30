@@ -22,36 +22,36 @@ const app = express();
 
 //session auth code------------------------
 
-//    const { NODE_ENV, COOKIE_LIFETIME_IN_DAYS, SESSION_SECRET, SESS_NAME } =
-//      process.env;
-//    const IN_PROD = NODE_ENV === "production";
-//
-//    //Initialize client.
-//    const client = createClient({});
-//    await client.connect();
-//    //Initialize store
-//    let redisStore = new RedisStore({
-//      client,
-//    });
-//
-//    //Initialize session storage.
-//    app.use(cookieParser());
-//    app.use(
-//      session({
-//        store: redisStore,
-//        name: SESS_NAME,
-//        resave: false, // required: force lightweight session keep alive (touch)
-//        saveUninitialized: false, // recommended: only save session when data exists
-//        secret: SESSION_SECRET,
-//        //rolling: true,
-//        cookie: {
-//          maxAge: 1000 * 60 * 60 * 24 * parseInt(COOKIE_LIFETIME_IN_DAYS),
-//          secure: IN_PROD,
-//          httpOnly: true,
-//          sameSite: "lax",
-//        },
-//      }),
-//    );
+const { NODE_ENV, COOKIE_LIFETIME_IN_DAYS, SESSION_SECRET, SESS_NAME } =
+  process.env;
+const IN_PROD = NODE_ENV === "production";
+
+//Initialize client.
+const client = createClient({});
+await client.connect();
+//Initialize store
+let redisStore = new RedisStore({
+  client,
+});
+
+//Initialize session storage.
+app.use(cookieParser());
+app.use(
+  session({
+    store: redisStore,
+    name: SESS_NAME,
+    resave: false, // required: force lightweight session keep alive (touch)
+    saveUninitialized: false, // recommended: only save session when data exists
+    secret: SESSION_SECRET,
+    //rolling: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * parseInt(COOKIE_LIFETIME_IN_DAYS),
+      secure: IN_PROD,
+      httpOnly: IN_PROD,
+      sameSite: "strict",
+    },
+  }),
+);
 
 //session auth code------------------------
 
@@ -71,7 +71,7 @@ await server.start();
 app.use(
   "/",
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
     credentials: true,
   }),
   json(),

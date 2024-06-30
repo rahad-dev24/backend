@@ -25,7 +25,7 @@ export default {
       const product = await prisma.product.create({
         data: {
           product_name: args.product_name,
-          user_id: args.user_id,
+          user_id: req.session.usedId,
           description: args.description,
           price: args.price,
           rent_price: args.rent_price,

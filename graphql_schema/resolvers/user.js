@@ -1,3 +1,4 @@
+import { createLanguageService } from "typescript";
 import prisma from "../../prisma/prisma.js";
 
 export default {
@@ -7,9 +8,12 @@ export default {
       return users;
     },
     getUser: async (parent, args, { req, res }, info) => {
+      if (!req.session.userId) {
+        throw new Error("Not authenticated");
+      }
       const user = await prisma.user.findUnique({
         where: {
-          id: args.id,
+          id: req.session.userId,
         },
       });
       return user;
@@ -18,7 +22,6 @@ export default {
   Mutation: {
     createUser: async (parent, args, { req, res }, info) => {
       //todo: hash password
-      console.log(args);
       const user = await prisma.user.create({
         data: {
           first_name: args.first_name,
@@ -31,7 +34,8 @@ export default {
       });
 
       //saving id to session cookie
-      // req.session.userId = user.id;
+      req.session.userId = user.id;
+
       return user;
     },
     signIn: async (parent, args, { req, res }, info) => {
@@ -44,7 +48,7 @@ export default {
       if (!user) throw new Error("Email does not exist");
       if (user.password === args.password) {
         //saving id to session cookie
-        //req.session.user =user.id
+        req.session.userId = user.id;
         return user;
       } else throw new Error("Invalid credentials");
     },

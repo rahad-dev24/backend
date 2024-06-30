@@ -37,9 +37,9 @@ model Category {
 }
 
 enum Rent_option {
-  Hourly
-  Daily
-  Monthly
+  Hour
+  Day
+  Month
 }
 
 model Product {
@@ -51,7 +51,7 @@ model Product {
   description      String
   price            Float
   rent_price       Float
-  rent_option      Rent_option        @default(Daily)
+  rent_option      Rent_option        @default(Day)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @default(now())
   product_category Product_category[]
