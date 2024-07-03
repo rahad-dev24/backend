@@ -9,14 +9,15 @@ export default gql`
     price: Float
     rent_price: Float
     rent_option: String
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
     User: User
-    product_category: [Product_category]
+    categories: [Category]
   }
   extend type Query {
     getProducts: [Product]
     getProduct(id: ID!): Product
+    getProducts_by_user(user_id: ID!): [Product]
   }
 
   extend type Mutation {
@@ -27,16 +28,17 @@ export default gql`
       price: Float
       rent_price: Float
       rent_option: String
-      product_category: [String]
+      categories: [String]
     ): Product
     updateProduct(
+      id: ID!
       product_name: String
       description: String
       price: Float
       rent_price: Float
       rent_option: String
-      product_category: [String]
+      categories: [String]
     ): Product
-    deleteProduct(id: ID!): Product
+    deleteProduct(id: ID!): Boolean
   }
 `;

@@ -1,10 +1,13 @@
-import { createLanguageService } from "typescript";
+
 import prisma from "../../prisma/prisma.js";
 
 export default {
   Query: {
     getUsers: async (parent, args, { req, res }, info) => {
       const users = await prisma.user.findMany();
+      users.forEach((user) => {
+        user.createdAt = user.createdAt.toDateString();
+      });
       return users;
     },
     getUser: async (parent, args, { req, res }, info) => {

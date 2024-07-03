@@ -4,9 +4,9 @@ export default gql`
   type Category {
     id: ID
     category_name: String
-    product_category: [Product_category]
-    created_at: DateTime
-    updated_at: DateTime
+    products: [Product]
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     getCategories: [Category]

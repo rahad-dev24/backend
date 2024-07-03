@@ -1,6 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
+  const isCategory = await prisma.category.findMany();
+  if (isCategory.length > 0) {
+    return;
+  }
+
   await prisma.category.createMany({
     data: [
       {

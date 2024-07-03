@@ -9,8 +9,8 @@ export default gql`
     email: String
     address: String
     password: String
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
     products: [Product]
   }
   extend type Query {
